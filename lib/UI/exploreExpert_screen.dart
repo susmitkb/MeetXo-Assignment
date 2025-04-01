@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:newproject/controllers/controller.dart';
+import 'package:newproject/controllers/expert_controller.dart';
 import 'package:newproject/models/expert_model.dart';
 
 class ExploreExpertsView extends StatelessWidget {
@@ -61,7 +61,6 @@ class ExploreExpertsView extends StatelessWidget {
                     ),
                     TextButton(
                       onPressed: () {
-                        // Handle see more action
                       },
                       child: const Text(
                         'See more',
@@ -75,7 +74,6 @@ class ExploreExpertsView extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 8),
-              // Existing content
               Expanded(
                 child: Obx(() {
                   if (controller.isLoading.value && controller.experts.isEmpty) {
@@ -126,17 +124,16 @@ class ExploreExpertsView extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
-      margin: const EdgeInsets.all(4), // Card margin
+      margin: const EdgeInsets.all(4),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Image Section with all badges
-          Padding( // Added padding around image
+          Padding(
             padding: const EdgeInsets.all(4.0),
             child: Stack(
               children: [
                 ClipRRect(
-                  borderRadius: const BorderRadius.vertical(top: Radius.circular(8)),
+                  borderRadius: const BorderRadius.all(Radius.circular(8)),
                   child: CachedNetworkImage(
                     imageUrl: expert.profileImage ?? '',
                     height: 110,
@@ -150,7 +147,6 @@ class ExploreExpertsView extends StatelessWidget {
                     ),
                   ),
                 ),
-                // Top Rated badge (kept as before)
                 Positioned(
                   top: 8,
                   left: 8,
@@ -166,7 +162,6 @@ class ExploreExpertsView extends StatelessWidget {
                     ),
                   ),
                 ),
-                // Advance badge with thunder icon (kept as before)
                 Positioned(
                   bottom: 8,
                   left: 8,
@@ -207,8 +202,6 @@ class ExploreExpertsView extends StatelessWidget {
               ],
             ),
           ),
-
-          // Bottom Grey Container (new unified section)
           Container(
             width: double.infinity,
             padding: const EdgeInsets.all(12),
@@ -225,15 +218,23 @@ class ExploreExpertsView extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 4),
-                Text(
-                  expert.professionTitle,
-                  style: TextStyle(color: Colors.grey[600], fontSize: 12),
-                  overflow: TextOverflow.ellipsis,
+                Row(
+                  children: [
+                    const Icon(Icons.shopping_bag_rounded, size: 14, color: Colors.grey),
+                    const SizedBox(width: 5),
+                    Expanded(
+                      child: Text(
+                        expert.professionTitle,
+                        style: TextStyle(color: Colors.grey[600], fontSize: 12),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 8),
                 Row(
                   children: [
-                    const Icon(Icons.people, size: 14, color: Colors.grey),
+                    const Icon(Icons.chat, size: 14, color: Colors.grey),
                     const SizedBox(width: 5),
                     Expanded(
                       child: Text(
@@ -245,7 +246,6 @@ class ExploreExpertsView extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 12),
-                // Unified container for Avg Pay and Rating
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   decoration: BoxDecoration(
@@ -294,24 +294,6 @@ class ExploreExpertsView extends StatelessWidget {
       ),
     );
   }
-
-  Widget _buildInfoColumn(String title, String value) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: TextStyle(color: Colors.grey[600], fontSize: 10),
-        ),
-        const SizedBox(height: 2),
-        Text(
-          value,
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
-        ),
-      ],
-    );
-  }
-
   Widget _buildStarRating(double rating) {
     return Row(
       children: List.generate(5, (index) {
